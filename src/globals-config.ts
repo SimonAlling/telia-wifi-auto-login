@@ -10,6 +10,7 @@ export const ID_STYLE_ELEMENT = USERSCRIPT_CONFIG.id + "-main-style-element";
 // How long to wait between performing operations (DOM manipulation etc) during page load:
 export const INTERVAL_OPERATIONS: number = 200; // ms
 // How long to wait after DOMContentLoaded before considering remaining operations failed:
-export const TIMEOUT_OPERATIONS: number = 1000; // ms
+export const TIMEOUT_OPERATIONS: number = 10000; // ms
+// We need quite a while, because stuff is added by JavaScript.
 
 export const DUMMY_EMAIL = "user@example.com";
