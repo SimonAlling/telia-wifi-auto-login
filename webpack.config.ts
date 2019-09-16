@@ -7,7 +7,6 @@ import * as webpack from "webpack";
 import * as path from "path";
 const UglifyJsPlugin = require("uglifyjs-webpack-plugin");
 const WebpackStrip = require("webpack-strip");
-const SassUtils = require("node-sass-utils")(require("node-sass"));
 
 // Order is important: mjs must come before js to enable tree-shaking for dual-mode ESM/CJS packages.
 const EXTENSIONS = ["ts", "tsx", "mjs", "js", "jsx", "scss"];
@@ -20,39 +19,6 @@ const LOG_FUNCTIONS_BY_LEVEL = [
     { level: LogLevel.WARNING, functions: [ "logWarning", "console.warn"  ] },
     { level: LogLevel.ERROR,   functions: [ "logError"  , "console.error" ] },
 ];
-
-// Function declaration notation does not work because SassUtils is undefined then.
-const toSassDimension = (s: string): any => {
-    const cssUnits = ["rem","em","vh","vw","vmin","vmax","ex","%","px","cm","mm","in","pt","pc","ch"];
-    const parts = s.match(/^([\.0-9]+)([a-zA-Z]+)$/);
-    if (parts === null) {
-        return s;
-    }
-    const number = parts[1], unit = parts[2];
-    if (cssUnits.includes(unit)) {
-        return new SassUtils.SassDimension(parseInt(number, 10), unit);
-    }
-    return s;
-}
-
-const toSassDimension_recursively = (x: any): any => {
-    if (typeof x === "string") {
-        return toSassDimension(x);
-    } else if (typeof x === "object") {
-        const result: any = {};
-        Object.keys(x).forEach(key => {
-            result[key] = toSassDimension_recursively(x[key]);
-        });
-        return result;
-    } else {
-        return x;
-    }
-}
-
-const SASS_VARS = toSassDimension_recursively({
-    CONFIG,
-    SITE,
-});
 
 export default (env: object, argv: {
     mode: Mode,
@@ -74,52 +40,6 @@ export default (env: object, argv: {
         },
         module: {
             rules: [
-                {
-                    test: /\.scss$/,
-                    loaders: [
-                        {
-                            loader: "to-string-loader",
-                        },
-                        {
-                            loader: "css-loader",
-                            options: {
-                                sass: true,
-                                sourceMap: false,
-                                modules: true,
-                                camelCase: true,
-                                namedExport: true,
-                                localIdentName: "[local]",
-                            },
-                        },
-                        {
-                            loader: "sass-loader",
-                            options: {
-                                functions: {
-                                    getGlobal: (keyString: any) => {
-                                        function fail(input: any) {
-                                            throw new TypeError(`Expected a string, but saw ${input}`);
-                                        }
-                                        if (keyString.getValue === undefined) { fail("nothing"); }
-                                        const value = keyString.getValue();
-                                        if (typeof value !== "string") { fail(value); }
-                                        function dig(obj: any, keys: string[]): any {
-                                            if (keys.length === 0) {
-                                                return obj;
-                                            } else {
-                                                const deeper = obj[keys[0]];
-                                                if (deeper === undefined) {
-                                                    throw new Error(`Unknown global: '${value}' (failed on '${keys[0]}')`);
-                                                }
-                                                return dig(deeper, keys.slice(1))
-                                            }
-                                        }
-                                        return SassUtils.castToSass(dig(SASS_VARS, value.split(".")));
-                                    },
-                                },
-                            },
-                        },
-                    ],
-                },
                 {
                     loaders: [
                         {
