@@ -8,5 +8,5 @@ export default {
     sitename: "Telia Wi-Fi",
     namespace: "simonalling.se",
     runAt: "document-start",
-    hostedAt: "https://github.com/SimonAlling/userscripts/"
+    hostedAt: "https://simonalling.github.io/userscripts/"
 };
