@@ -8,7 +8,7 @@ export const PATH = {
 };
 
 export const SELECTOR = {
-    button_register: `[ng-if="vm.emailRegistrationPluginEnabled"] button`,
+    button_register: `[text="vm.ui.emailRegistrationText.value"] button`,
     checkbox_acceptTerms: `[ng-model="c.agreed"]`,
     button_acceptTerms: `button.terms-agree-button`,
     textfield_email: `input[type="email"]`,
