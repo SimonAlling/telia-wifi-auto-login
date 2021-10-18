@@ -27,7 +27,6 @@ const OPERATIONS: ReadonlyArray<Operation> = [
         selectors: { registerButton: SITE.SELECTOR.button_register },
         action: e => {
             // Initiate register procedure:
-            log(`Looking for register button ...`);
             e.registerButton.click();
 
             // Accept terms and conditions:
