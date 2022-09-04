@@ -18,7 +18,7 @@
     "uglifyjs-webpack-plugin": "^1.2.7",
     "userscript-metadata": "^1.0.0",
     "webpack": "^4.42.1",
-    "webpack-cli": "^3.0.8",
+    "webpack-cli": "^3.3.12",
     "webpack-strip": "^0.1.0"
   }
 }
