@@ -15,7 +15,7 @@
     "ts-type-guards": "^0.4.0",
     "tsconfig-paths": "^3.5.0",
     "typescript": "^2.9.2",
-    "uglifyjs-webpack-plugin": "^1.2.7",
+    "uglifyjs-webpack-plugin": "^2.2.0",
     "userscript-metadata": "^1.0.0",
     "webpack": "^4.42.1",
     "webpack-cli": "^3.0.8",
